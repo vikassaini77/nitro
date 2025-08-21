@@ -1,0 +1,192 @@
+{
+  "info": {
+    "name": "File Parser API Pro PG",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "username",
+      "value": "admin"
+    },
+    {
+      "key": "password",
+      "value": "admin123"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "username",
+              "value": "{{username}}"
+            },
+            {
+              "key": "password",
+              "value": "{{password}}"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/token",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "token"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var data = pm.response.json();",
+              "pm.collectionVariables.set('token', data.access_token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Upload File",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": ""
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/files",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "files"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Progress",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/files/:file_id/progress",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "files",
+            ":file_id",
+            "progress"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Parsed Content",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/files/:file_id",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "files",
+            ":file_id"
+          ]
+        }
+      }
+    },
+    {
+      "name": "List Files",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/files",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "files"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete File",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/files/:file_id",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "files",
+            ":file_id"
+          ]
+        }
+      }
+    }
+  ]
+}
